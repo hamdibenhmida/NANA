@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530e556d4407947dcae7102ff497587d, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"graph":{"title":null,"summary":null,"pan":{"x":138.0,"y":-160.304},"zoom":1.0,"elements":[{"isStart":true,"position":{"x":-137.0,"y":-112.0},"width":170.0,"guid":"36341e72-01f7-4a33-aca3-4945da31f223","$type":"Unity.VisualScripting.AnyState","$id":"3"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{},"position":{"x":-205.0,"y":-215.0},"guid":"b98e8da8-cd09-458a-8551-bd2c13ae7f35","$version":"A","$type":"Unity.VisualScripting.OnEnterState"},{"coroutine":false,"defaultValues":{},"position":{"x":-161.0,"y":-38.0},"guid":"4d11dd21-942b-46b2-b636-f598548e1bda","$version":"A","$type":"Unity.VisualScripting.Update"},{"coroutine":false,"defaultValues":{},"position":{"x":-205.0,"y":145.0},"guid":"5f3de40c-1e5c-4a08-a339-245b018e5107","$version":"A","$type":"Unity.VisualScripting.OnExitState"}],"$version":"A"}},"isStart":false,"position":{"x":245.0,"y":-152.0},"width":170.0,"guid":"8dea81be-ccc8-4dd7-afb0-ca13aba73266","$version":"A","$type":"Unity.VisualScripting.FlowState","$id":"4"},{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"defaultValues":{},"position":{"x":100.0,"y":-50.0},"guid":"03c9a415-4d5d-49e3-b291-35dc8930cd51","$version":"A","$type":"Unity.VisualScripting.TriggerStateTransition"}],"$version":"A"}},"source":{"$ref":"3"},"destination":{"$ref":"4"},"guid":"81b514d9-1057-40a3-99d3-2ee8e5559e56","$version":"A","$type":"Unity.VisualScripting.FlowStateTransition"}],"$version":"A"}}'
+    _objectReferences: []
