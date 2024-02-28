@@ -27,6 +27,7 @@ using UnityEngine.Windows;
         void Update()
         {
             playerUI.updateText(string.Empty);
+            playerUI.updatesprite(default ,0f );
 
             Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
             Debug.DrawRay(ray.origin, ray.direction * distance, Color.blue);
@@ -39,6 +40,7 @@ using UnityEngine.Windows;
                 {
                     Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
                     playerUI.updateText(interactable.promptMessage);
+                    playerUI.updatesprite(interactable.keyToPress, 100f );
                     if (UnityEngine.Input.GetKeyDown ("e"))
                     {
                         interactable.BeseInteract();

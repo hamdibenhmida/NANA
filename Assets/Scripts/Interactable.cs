@@ -6,6 +6,7 @@ public abstract class Interactable : MonoBehaviour
 {
     public bool useEvents;
     public string promptMessage;
+    public Sprite keyToPress;
    
     public void BeseInteract()
     {
