@@ -34,19 +34,19 @@ using UnityEngine.Windows;
             RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo, distance))
             {
-            if(hitInfo.collider.tag == "interactable")
-            {
-                if (hitInfo.collider.GetComponent<Interactable>() != null)
+                if(hitInfo.collider.tag == "interactable")
                 {
-                    Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
-                    playerUI.updateText(interactable.promptMessage);
-                    playerUI.updatesprite(interactable.keyToPress, 100f );
-                    if (UnityEngine.Input.GetKeyDown ("e"))
+                    if (hitInfo.collider.GetComponent<Interactable>() != null)
                     {
-                        interactable.BeseInteract();
+                        Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
+                        playerUI.updateText(interactable.promptMessage);
+                        playerUI.updatesprite(interactable.keyToPress, 100f );
+                        if (UnityEngine.Input.GetKeyDown ("e"))
+                        {
+                            interactable.BeseInteract();
+                        }
                     }
                 }
-            }
                 
             }
         }

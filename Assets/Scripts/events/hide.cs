@@ -5,8 +5,33 @@ using UnityEngine;
 public class hide : MonoBehaviour
 {
     [SerializeField] private Transform player;
-   public void Hide (Transform Place)
+    [SerializeField] private Transform hidePlace;
+    [SerializeField] private Transform freePlace;
+
+
+    private bool isHiding = false;
+    
+
+    public void EnterHiding()
     {
-        player.position = Place.position;
+        
+        if (!isHiding)
+        {
+            // implement animation and change placing character
+            /* need to cahnge */ player.position = hidePlace.position;
+            isHiding = true;
+           
+        }
+        else
+        {
+            // implement animation and change placing character
+            /* need to cahnge */ player.position = freePlace.position;
+
+            isHiding = false;
+            
+        }
+
     }
+
+
 }
