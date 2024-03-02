@@ -11,13 +11,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject SettingsMenu;
     [SerializeField] private GameObject QuitMenu;
 
-    public GameObject tablet;
-    public GameObject tabletUI;
+    [SerializeField] private GameObject tablet;
+    [SerializeField] private GameObject tabletUI;
 
-    public GameObject playercamera;
-    public GameObject playercamerabutton;
-    public GameObject targetcamera;
-    public GameObject targetcamerabutton;
+    
+    
 
     void Start()
     {
