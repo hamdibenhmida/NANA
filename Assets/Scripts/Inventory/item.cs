@@ -7,6 +7,8 @@ public class item : MonoBehaviour
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;
 
+    public Sprite icon;
+
     public bool isActiveItem = false;
     private void Update()
     {
