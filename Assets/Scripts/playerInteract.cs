@@ -40,9 +40,12 @@ public class playerInteract : MonoBehaviour
             if(hitInfo.collider.tag == "interactable")
             {
                
-                // outline interactable object when looking at 
+                // outline interactable object when looking at (if it is an item it have outline script)
                 hoveredInteractable = hitInfo.collider.gameObject;
-                hoveredInteractable.GetComponent<Outline>().enabled = true;
+                if (hoveredInteractable.GetComponent<item>() )
+                {
+                    hoveredInteractable.GetComponent<Outline>().enabled = true; 
+                }
                 
 
                 //interact with interactable objects
@@ -55,12 +58,17 @@ public class playerInteract : MonoBehaviour
                     if (UnityEngine.Input.GetKeyDown ("e"))// need to  change this input to the new input system
                     {
                         interactable.BeseInteract();
+
+                        if (hoveredInteractable.GetComponent<item>())//check if the interactable is an item
+                        {
+                            InventoryManager.Instance.pickUpItem(hoveredInteractable); 
+                        }
                     }
                 }
             }
             else // disable outline when not looking at an interactable object
             {
-                if (hoveredInteractable)
+                if (hoveredInteractable && hoveredInteractable.GetComponent<item>())
                 {
                     hoveredInteractable.GetComponent<Outline>().enabled = false;
                 }
