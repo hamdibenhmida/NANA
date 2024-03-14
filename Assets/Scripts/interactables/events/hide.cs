@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ public class hide : MonoBehaviour
     [SerializeField] private Transform freePlace;
 
 
-    private bool isHiding = false;
+    [SerializeField] private bool isHiding = false;
     
 
     public void EnterHiding()
@@ -18,7 +18,9 @@ public class hide : MonoBehaviour
         if (!isHiding)
         {
             // implement animation and change placing character
-            /* need to cahnge */ player.position = hidePlace.position;
+            /* need to cahnge */ 
+            player.GetComponent<CharacterController>().enabled = false;
+            player.position = hidePlace.position;
             isHiding = true;
            
         }
@@ -26,7 +28,7 @@ public class hide : MonoBehaviour
         {
             // implement animation and change placing character
             /* need to cahnge */ player.position = freePlace.position;
-
+            player.GetComponent<CharacterController>().enabled = true;
             isHiding = false;
             
         }

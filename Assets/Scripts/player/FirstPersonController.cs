@@ -56,7 +56,8 @@ namespace StarterAssets
 
 		// player
 		private float _speed;
-		private float _rotationVelocity;
+        private float _animationBlend;
+        private float _rotationVelocity;
 		private float _verticalVelocity;
 		private float _terminalVelocity = 53.0f;
 
@@ -68,14 +69,16 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM
 		private PlayerInput _playerInput;
 #endif
-		private CharacterController _controller;
+        private Animator _animator;
+        private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
 
 		private const float _threshold = 0.01f;
 
-		
-		private bool IsCurrentDeviceMouse
+        private bool _hasAnimator;
+
+        private bool IsCurrentDeviceMouse
 		{
 			get
 			{
@@ -98,7 +101,8 @@ namespace StarterAssets
 
 		private void Start()
 		{
-			_controller = GetComponent<CharacterController>();
+            _hasAnimator = TryGetComponent(out _animator);
+            _controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM
 			_playerInput = GetComponent<PlayerInput>();
@@ -113,13 +117,13 @@ namespace StarterAssets
 
 		private void Update()
 		{
+            _hasAnimator = TryGetComponent(out _animator);
+            
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
-			
 		}
 
-		
 		private void LateUpdate()
 		{
 			CameraRotation();
@@ -130,7 +134,13 @@ namespace StarterAssets
 			// set sphere position, with offset
 			Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
 			Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
-		}
+
+            // update animator if using character
+            if (_hasAnimator)
+            {
+                _animator.SetBool("Grounded", Grounded);
+            }
+        }
 
 		private void CameraRotation()
 		{
@@ -186,8 +196,11 @@ namespace StarterAssets
 				_speed = targetSpeed;
 			}
 
-			// normalise input direction
-			Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+            if (_animationBlend < 0.01f) _animationBlend = 0f;
+
+            // normalise input direction
+            Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
@@ -199,7 +212,14 @@ namespace StarterAssets
 
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-		}
+
+            // update animator if using character
+            if (_hasAnimator)
+            {
+                _animator.SetFloat("Speed", _animationBlend);
+                _animator.SetFloat("MotionSpeed", inputMagnitude);
+            }
+        }
 
 		private void JumpAndGravity()
 		{
@@ -208,8 +228,16 @@ namespace StarterAssets
 				// reset the fall timeout timer
 				_fallTimeoutDelta = FallTimeout;
 
-				// stop our velocity dropping infinitely when grounded
-				if (_verticalVelocity < 0.0f)
+                // update animator if using character
+                if (_hasAnimator)
+                {
+                    _animator.SetBool("Jump", false);
+                    _animator.SetBool("FreeFall", false);
+                }
+
+
+                // stop our velocity dropping infinitely when grounded
+                if (_verticalVelocity < 0.0f)
 				{
 					_verticalVelocity = -2f;
 				}
@@ -219,7 +247,13 @@ namespace StarterAssets
 				{
 					// the square root of H * -2 * G = how much velocity needed to reach desired height
 					_verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-				}
+
+                    // update animator if using character
+                    if (_hasAnimator)
+                    {
+                        _animator.SetBool("Jump", true);
+                    }
+                }
 
 				// jump timeout
 				if (_jumpTimeoutDelta >= 0.0f)
@@ -237,9 +271,17 @@ namespace StarterAssets
 				{
 					_fallTimeoutDelta -= Time.deltaTime;
 				}
+                else
+                {
+                    // update animator if using character
+                    if (_hasAnimator)
+                    {
+                        _animator.SetBool("FreeFall", true);
+                    }
+                }
 
-				// if we are not grounded, do not jump
-				_input.jump = false;
+                // if we are not grounded, do not jump
+                _input.jump = false;
 			}
 
 			// apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)

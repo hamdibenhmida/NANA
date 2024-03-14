@@ -10,8 +10,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject[] UIInventorySlots;
 
-    public GameObject UIInventoryActiveItemSlot = null;
-    public GameObject UIInventoryAvailableItemSlot = null;
+    [SerializeField] private GameObject UIInventoryActiveItemSlot = null;
+    [SerializeField] private GameObject UIInventoryAvailableItemSlot = null;
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
-        UIInventoryActiveItemSlot = UIInventorySlots[0];
+        
         UIInventoryAvailableItemSlot = UIInventorySlots[0];
     }
 
@@ -56,7 +56,21 @@ public class UIManager : MonoBehaviour
 
     public void updateInventoryItemIcon(Sprite icon)
     {
-        UIInventoryAvailableItemSlot.GetComponent<Image>().sprite = icon;
+        
+        // Check if the sprite is null
+        if (icon == null)
+        {
+            
+            UIInventoryActiveItemSlot.GetComponent<Image>().sprite = icon;
+            UIInventoryActiveItemSlot = null;
+
+        }
+        else
+        {
+            
+            UIInventoryAvailableItemSlot.GetComponent<Image>().sprite = icon;
+        }
+        
 
     }
 
@@ -68,13 +82,28 @@ public class UIManager : MonoBehaviour
 
     public void switchInventoryActiveUISlot(int slotNumber)
     {
-        Image UICurrentItem = UIInventoryActiveItemSlot.GetComponent<Image>();
-        UICurrentItem.color = new Color(255, 255, 255, 0.5f);
+        
+        if (UIInventoryActiveItemSlot != null)
+        {
+            Image UICurrentItem = UIInventoryActiveItemSlot.GetComponent<Image>();
+            UICurrentItem.color = new Color(255, 255, 255, 0.5f); 
+        }
 
-        UIInventoryActiveItemSlot = UIInventorySlots[slotNumber];
+        if (slotNumber == -1)
+        {
+            UIInventoryActiveItemSlot = null;
+        }else
+        {
+            UIInventoryActiveItemSlot = UIInventorySlots[slotNumber];
 
-        Image UINewItem = UIInventoryActiveItemSlot.GetComponent<Image>();
-        UINewItem.color = new Color(255, 255, 255, 1f);
+            Image UINewItem = UIInventoryActiveItemSlot.GetComponent<Image>();  
+            UINewItem.color = new Color(255, 255, 255, 1f);
+
+        }
+
+        
+
+        
     } 
     #endregion
 
