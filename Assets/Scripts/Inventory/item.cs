@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Outline))]
+[RequireComponent(typeof(Rigidbody))]
 public class item : MonoBehaviour
 {
     public Vector3 spawnPosition;
@@ -15,9 +18,9 @@ public class item : MonoBehaviour
 
     private void Start()
     {
-        gameObject.AddComponent<BoxCollider>();
-        gameObject.AddComponent<Outline>().enabled = false;
-        Rigidbody rigidbBody = gameObject.AddComponent<Rigidbody>();
+        gameObject.GetComponent<BoxCollider>();
+        gameObject.GetComponent<Outline>().enabled = false;
+        Rigidbody rigidbBody = gameObject.GetComponent<Rigidbody>();
         rigidbBody.interpolation = RigidbodyInterpolation.Extrapolate;
         rigidbBody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 
