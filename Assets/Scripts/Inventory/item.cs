@@ -10,19 +10,6 @@ public class item : MonoBehaviour
     public Sprite icon;
 
     public bool isActiveItem = false;
-
-    
-
-    private void Start()
-    {
-        gameObject.AddComponent<BoxCollider>();
-        gameObject.AddComponent<Outline>().enabled = false;
-        Rigidbody rigidbBody = gameObject.AddComponent<Rigidbody>();
-        rigidbBody.interpolation = RigidbodyInterpolation.Extrapolate;
-        rigidbBody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-
-
-    }
     private void Update()
     {
         if (isActiveItem)
