@@ -7,8 +7,6 @@ TagManager:
   - CinemachineTarget
   - interactable
   - vitualcamera
-  - trigger
-  - fence
   layers:
   - Default
   - TransparentFX
