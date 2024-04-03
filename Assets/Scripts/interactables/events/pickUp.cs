@@ -12,10 +12,15 @@ public class pickUp : MonoBehaviour
         AudioSource = GetComponent<AudioSource>();
     }
 
-    
-    public void answerPhone(AudioClip conversation) 
+    public void answerPhone ()
     {
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        AudioSource.Stop ();
         
+    }
+
+    public void phoneCall (AudioClip conversation) 
+    {
         AudioSource.clip = conversation;
         AudioSource.Play ();
     }

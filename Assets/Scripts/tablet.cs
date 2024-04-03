@@ -22,7 +22,19 @@ public class tablet : MonoBehaviour
         menu.SetActive(false);
     }
 
-    
+    public void UnlockDoor(GameObject door)
+    {
+        keypad[] keypads = door.GetComponentsInChildren<keypad>();
+        changeScreenColor[] changeScreenColor = door.GetComponentsInChildren<changeScreenColor>();
+        foreach (var screen in keypads)
+        {
+            screen.doorLocked = false;
+        }
+        foreach (var screen in changeScreenColor)
+        {
+            screen.ChangeColor();
+        }
+    }
 
     public void SwitchToCamera(GameObject TargetCamera)
     {
