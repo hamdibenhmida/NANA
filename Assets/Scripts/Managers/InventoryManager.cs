@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 
 
@@ -13,9 +14,6 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private GameObject activeItemSlot ;
     [SerializeField] private GameObject availableItemSlot ;
-
-    
-
 
     [SerializeField] private Transform FPSCamera;
     [SerializeField] private float dropForwardForce;
@@ -35,7 +33,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-
+        GetAvailableSlot();
         if (FPSCamera == null)
             FPSCamera = Camera.main.transform;
        UpdateInventoryUI();
@@ -43,12 +41,6 @@ public class InventoryManager : MonoBehaviour
 
     private void Update()
     {
-        //get active item into player hand
-        GetActiveItem();
-
-        //get empty slot
-        GetAvailableSlot();
-
         //need to change the inputs to the new input system
         #region inputs 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -77,22 +69,6 @@ public class InventoryManager : MonoBehaviour
         }
         #endregion 
 
-
-    }
-
-    private void GetActiveItem()
-    {
-        foreach (GameObject slot in slots)
-        {
-            if (slot == activeItemSlot)
-            {
-                slot.SetActive(true);
-            }
-            else
-            {
-                slot.SetActive(false);
-            }
-        }
     }
 
     private void GetAvailableSlot()
@@ -110,135 +86,90 @@ public class InventoryManager : MonoBehaviour
         
     }
 
-    public void pickUpItem(GameObject pickedUpItem)
-    {
-
-        AddItemIntoInvetory(pickedUpItem);
-
-        UpdateInventoryUI();
-    }
+    
 
     private void UpdateInventoryUI()
     {
         foreach (GameObject Slot in slots)
         {
-            Image slotIcon = Slot.GetComponent<Slot>().UISlot.GetComponent<Image>();
-
-            if (Slot == activeItemSlot)
-            {
-                slotIcon.color = new Color(255, 255, 255, 1f);
-            }
-            else
-            {
-                slotIcon.color = new Color(255, 255, 255, 0.5f);
-            }
+            Slot.GetComponent<Slot>().UpdateSlotUI();
         }
-
-        
 
     }
 
-    private void AddItemIntoInvetory(GameObject pickedUpItem)
+    public void PickUpItem(GameObject pickedUpItem)
     {
-        Outline outline = pickedUpItem.GetComponent<Outline>();
-        Destroy(outline);
-
-
         pickedUpItem.transform.SetParent(availableItemSlot.transform,false);
+
+        availableItemSlot.GetComponent<Slot>().UpdateSlotUI();
+        GetAvailableSlot();
 
         Item item = pickedUpItem.GetComponent<Item>();
         // make collider istrigger
         MeshCollider itemCollider = pickedUpItem.GetComponent<MeshCollider>();
-        
-            itemCollider.isTrigger = true;
-     
 
+        itemCollider.isTrigger = true;
+     
         // Disable the Rigidbody's gravity and set kinematic to true
         Rigidbody itemRigidbody = pickedUpItem.GetComponent<Rigidbody>();
         Destroy(itemRigidbody);
        
-
-
         pickedUpItem.transform.localPosition = new Vector3(item.spawnPosition.x , item.spawnPosition.y,item.spawnPosition.z);
         pickedUpItem.transform.localRotation = Quaternion.Euler(item.spawnRotation.x, item.spawnRotation.y,item.spawnRotation.z);
 
-
-
-
-        activeItemSlot.GetComponent<Slot>().UpdateSlotUI();
-        
     }
 
    
     private void SetActiveSlot(int slotNumber)
     {
-
         if (slots[slotNumber].transform.childCount > 0)
         {
-            
             if (activeItemSlot != null && activeItemSlot.transform.childCount > 0)
             {
-                Item currentItem = activeItemSlot.transform.GetChild(0).GetComponent<Item>();
-                currentItem.isActiveItem = false;
+                activeItemSlot.SetActive(false);
             }
 
             if (activeItemSlot == slots[slotNumber]) // Check if the selected slot is already active
             {
+                activeItemSlot.SetActive(false);
                 activeItemSlot = null; // Deactivate the slot
-               // InventoryUI.Instance.switchInventoryActiveUISlot(-1); // Pass -1 to indicate no active slot
+                
                 return;
             }
 
             activeItemSlot = slots[slotNumber];
-        //    InventoryUI.Instance.switchInventoryActiveUISlot(slotNumber);
+            activeItemSlot.SetActive(true);
 
-            if (activeItemSlot.transform.childCount > 0)
-            {
-                Item newItem = activeItemSlot.transform.GetChild(0).GetComponent<Item>();
-                newItem.isActiveItem = true;
-            } 
         }
 
     }
 
     private void DropItem()
     {
-
-        
-
         if (activeItemSlot != null && activeItemSlot.transform.childCount > 0)
         {
-
             Item currentItem = activeItemSlot.transform.GetChild(0).GetComponent<Item>();
-            currentItem.gameObject.AddComponent<Outline>().enabled = false;
-
+            
+            currentItem.transform.parent.gameObject.SetActive(false);
             currentItem.transform.SetParent(null);
-            currentItem.isActiveItem = false;
-
+            
             currentItem.GetComponent<Collider>().isTrigger = false;// reset collider to normal
 
             currentItem.AddRigidbody();
-
 
             Rigidbody itemRigidbody = currentItem.GetComponent<Rigidbody>();
             itemRigidbody.AddForce(FPSCamera.forward * dropForwardForce, ForceMode.Impulse);
             itemRigidbody.AddForce(FPSCamera.up * dropUpwardForce, ForceMode.Impulse);
 
-            
+            activeItemSlot.GetComponent<Slot>().UpdateSlotUI();
 
             // Reset the activeItemSlot and update the UI to reflect no active slot
             activeItemSlot = null;
-      //      InventoryUI.Instance.updateInventoryItemIcon(null); // Pass null to indicate no item is being held
-
-            
-            
+       
         }
+
+        GetAvailableSlot();
         
-        
-
-
-
     }
-
 
 }

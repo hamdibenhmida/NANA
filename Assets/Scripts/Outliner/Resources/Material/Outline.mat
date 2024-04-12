@@ -60,7 +60,7 @@ Material:
     m_Ints: []
     m_Floats:
     - Scale: -1
-    - Thickness: 1
+    - Thickness: 0
     - _AddPrecomputedVelocity: 0
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 0

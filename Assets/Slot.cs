@@ -7,10 +7,12 @@ using static UnityEditor.Progress;
 public class Slot : MonoBehaviour
 {
     public GameObject UISlot;
+    
 
     private void Awake()
     {
         UpdateSlotUI();
+        gameObject.SetActive(false);
     }
     private void Start()
     {
@@ -30,6 +32,17 @@ public class Slot : MonoBehaviour
         }
         else UISlotImage.sprite = default;
 
+        
 
+    }
+
+    private void OnEnable()
+    {
+        UISlot.GetComponent<Image>().color = new Color(255, 255, 255, 1f);
+    }
+
+    private void OnDisable()
+    {
+        UISlot.GetComponent<Image>().color = new Color(255, 255, 255, 0.5f);
     }
 }

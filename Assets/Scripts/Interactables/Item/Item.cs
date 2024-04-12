@@ -9,31 +9,36 @@ public class Item : Interactable
 
     public Sprite icon;
 
-    public bool isActiveItem = false;
-    
+    Outline outline;
 
 
-   
+
+
 
     private void Start()
     {
-        if (gameObject.GetComponent<Outline>())
-            gameObject.GetComponent<Outline>().enabled = false;
-        else
-            gameObject.AddComponent<Outline>().enabled = false;
-
-        
-
         AddRigidbody();
     }
 
-    public void Hovered(bool hovered)
+    private void OnEnable()
     {
-        Outline outline = gameObject.GetComponent<Outline>();
-        if (hovered)
-        outline.enabled = true;
-        else outline.enabled = false;
+        if (transform.parent && transform.parent.CompareTag("Slot"))
+        {
+            if (outline)
+            Destroy(outline);
+        }
+        else
+        {
+            outline = outline ? gameObject.GetComponent<Outline>() : gameObject.AddComponent<Outline>();
+
+            outline.enabled = false;
+
+        }
     }
+
+    public void Hovered(bool hovered) => outline.enabled = hovered;
+
+
     public Rigidbody AddRigidbody()
     {
         
@@ -51,7 +56,7 @@ public class Item : Interactable
     protected override void interact()
     {
         base.interact();
-        InventoryManager.Instance.pickUpItem(this.gameObject);
+        InventoryManager.Instance.PickUpItem(this.gameObject);
         
     }
 
