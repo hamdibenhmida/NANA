@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e79ba387d8d34e447b34223f10481c60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  closeDoorWhenEnter: 0
 --- !u!1 &2319964802901196202
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +264,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useEvents: 0
-  promptMessage: 
-  keyToPress: {fileID: 0}
-  isOpen: 1
+  promptMessage: open
+  keyToPress: {fileID: 21300000, guid: 1dcc28b31d3e61646aeebc4d9265f677, type: 3}
+  isOpen: 0
+  openedDoorPromptMessage: Close
+  closeedDoorPromptMessage: Open

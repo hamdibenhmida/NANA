@@ -1,5 +1,7 @@
 
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
@@ -7,17 +9,17 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; set; }
 
-    public GameObject[] slots;
+    [SerializeField] private GameObject[] slots;
 
-    public GameObject activeItemSlot ;//{ get; private set; }
-    public GameObject availableItemSlot ;//{ get; private set; }
+    [SerializeField] private GameObject activeItemSlot ;
+    [SerializeField] private GameObject availableItemSlot ;
 
     
-    
 
-    public Transform FPSCamera;
-    public float dropForwardForce;
-    public float dropUpwardForce;
+
+    [SerializeField] private Transform FPSCamera;
+    [SerializeField] private float dropForwardForce;
+    [SerializeField] private float dropUpwardForce;
 
     private void Awake()
     {
@@ -36,7 +38,7 @@ public class InventoryManager : MonoBehaviour
 
         if (FPSCamera == null)
             FPSCamera = Camera.main.transform;
-       
+       UpdateInventoryUI();
     }
 
     private void Update()
@@ -112,6 +114,28 @@ public class InventoryManager : MonoBehaviour
     {
 
         AddItemIntoInvetory(pickedUpItem);
+
+        UpdateInventoryUI();
+    }
+
+    private void UpdateInventoryUI()
+    {
+        foreach (GameObject Slot in slots)
+        {
+            Image slotIcon = Slot.GetComponent<Slot>().UISlot.GetComponent<Image>();
+
+            if (Slot == activeItemSlot)
+            {
+                slotIcon.color = new Color(255, 255, 255, 1f);
+            }
+            else
+            {
+                slotIcon.color = new Color(255, 255, 255, 0.5f);
+            }
+        }
+
+        
+
     }
 
     private void AddItemIntoInvetory(GameObject pickedUpItem)
@@ -138,10 +162,10 @@ public class InventoryManager : MonoBehaviour
         pickedUpItem.transform.localPosition = new Vector3(item.spawnPosition.x , item.spawnPosition.y,item.spawnPosition.z);
         pickedUpItem.transform.localRotation = Quaternion.Euler(item.spawnRotation.x, item.spawnRotation.y,item.spawnRotation.z);
 
-        
 
-        if (item.icon != null) 
-            UIManager.Instance.updateInventoryItemIcon(item.icon);
+
+
+        activeItemSlot.GetComponent<Slot>().UpdateSlotUI();
         
     }
 
@@ -161,12 +185,12 @@ public class InventoryManager : MonoBehaviour
             if (activeItemSlot == slots[slotNumber]) // Check if the selected slot is already active
             {
                 activeItemSlot = null; // Deactivate the slot
-                UIManager.Instance.switchInventoryActiveUISlot(-1); // Pass -1 to indicate no active slot
+               // InventoryUI.Instance.switchInventoryActiveUISlot(-1); // Pass -1 to indicate no active slot
                 return;
             }
 
             activeItemSlot = slots[slotNumber];
-            UIManager.Instance.switchInventoryActiveUISlot(slotNumber);
+        //    InventoryUI.Instance.switchInventoryActiveUISlot(slotNumber);
 
             if (activeItemSlot.transform.childCount > 0)
             {
@@ -204,7 +228,7 @@ public class InventoryManager : MonoBehaviour
 
             // Reset the activeItemSlot and update the UI to reflect no active slot
             activeItemSlot = null;
-            UIManager.Instance.updateInventoryItemIcon(null); // Pass null to indicate no item is being held
+      //      InventoryUI.Instance.updateInventoryItemIcon(null); // Pass null to indicate no item is being held
 
             
             
