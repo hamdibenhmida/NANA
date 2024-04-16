@@ -1,8 +1,5 @@
 
-using System;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 
 
@@ -99,24 +96,27 @@ public class InventoryManager : MonoBehaviour
 
     public void PickUpItem(GameObject pickedUpItem)
     {
-        pickedUpItem.transform.SetParent(availableItemSlot.transform,false);
+        if (availableItemSlot.transform.childCount == 0)
+        {
+            pickedUpItem.transform.SetParent(availableItemSlot.transform, false);
 
-        availableItemSlot.GetComponent<Slot>().UpdateSlotUI();
-        GetAvailableSlot();
 
-        Item item = pickedUpItem.GetComponent<Item>();
-        // make collider istrigger
-        MeshCollider itemCollider = pickedUpItem.GetComponent<MeshCollider>();
+            availableItemSlot.GetComponent<Slot>().UpdateSlotUI();
+            GetAvailableSlot();
 
-        itemCollider.isTrigger = true;
-     
-        // Disable the Rigidbody's gravity and set kinematic to true
-        Rigidbody itemRigidbody = pickedUpItem.GetComponent<Rigidbody>();
-        Destroy(itemRigidbody);
-       
-        pickedUpItem.transform.localPosition = new Vector3(item.spawnPosition.x , item.spawnPosition.y,item.spawnPosition.z);
-        pickedUpItem.transform.localRotation = Quaternion.Euler(item.spawnRotation.x, item.spawnRotation.y,item.spawnRotation.z);
+            Item item = pickedUpItem.GetComponent<Item>();
+            // make collider istrigger
+            MeshCollider itemCollider = pickedUpItem.GetComponent<MeshCollider>();
 
+            itemCollider.isTrigger = true;
+
+            // Disable the Rigidbody's gravity and set kinematic to true
+            Rigidbody itemRigidbody = pickedUpItem.GetComponent<Rigidbody>();
+            Destroy(itemRigidbody);
+
+            pickedUpItem.transform.localPosition = new Vector3(item.spawnPosition.x, item.spawnPosition.y, item.spawnPosition.z);
+            pickedUpItem.transform.localRotation = Quaternion.Euler(item.spawnRotation.x, item.spawnRotation.y, item.spawnRotation.z);
+        }
     }
 
    
